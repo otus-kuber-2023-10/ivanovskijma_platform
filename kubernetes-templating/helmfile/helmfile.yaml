@@ -1,0 +1,49 @@
+repositories:
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: harbor
+    url: https://helm.goharbor.io
+
+
+releases:
+
+# - name: ingress-nginx
+#   namespace: ingress-nginx
+#   chart: ingress-nginx/ingress-nginx
+
+- name: cert-manager
+  namespace: cert-manager
+  chart: jetstack/cert-manager
+  set:
+    - name: installCRDs
+      values:
+        - true
+  wait: true
+  waitForJobs: true
+
+- name: issuer
+  needs:
+    - cert-manager
+  namespace: cert-manager
+  chart: ../cert-manager/issuer
+  disableValidation: true
+  # disableValidationOnInstall: true
+  # disableOpenAPIValidation: true
+
+- name: chartmuseum
+  needs:
+    - cert-manager/issuer
+  namespace: chartmuseum
+  chart: ../chartmuseum/chartmuseum
+  values:
+    - ../chartmuseum/values.yaml
+
+- name: harbor
+  needs:
+    - chartmuseum/chartmuseum
+  namespace: harbor
+  chart: harbor/harbor
+  values:
+    - ../harbor/values.yaml
