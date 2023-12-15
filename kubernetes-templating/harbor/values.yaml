@@ -1,0 +1,19 @@
+expose:
+  type: ingress
+  tls:
+    enabled: true
+    certSource: secret
+    secret:
+      secretName: "letsencrypt"
+  ingress:
+    hosts:
+      core: harbor.ivanovskijma.ru
+    controller: default
+    className: "nginx"
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt"
+
+externalURL: https://harbor.ivanovskijma.ru
+
+existingSecretAdminPasswordKey: admin
+harborAdminPassword: "12345678"
