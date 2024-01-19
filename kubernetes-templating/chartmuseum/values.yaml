@@ -1,0 +1,10 @@
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt"
+  hosts:
+    - name: chartmuseum.ivanovskijma.ru
+      path: /
+      tls: true
+      tlsSecret: letsencrypt
