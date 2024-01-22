@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nginx-monitor
+  labels:
+    release: prom
+spec:
+  selector:
+    matchLabels:
+      app: nginx-exp
+  endpoints:
+  - port: exp

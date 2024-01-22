@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-exp
+  labels:
+    app: nginx-exp
+spec:
+  selector:
+    app: nginx-exp
+  type: ClusterIP
+  ports:
+  - name: exp
+    port: 9113
