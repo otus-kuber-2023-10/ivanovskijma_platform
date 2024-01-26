@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-exp
+  labels:
+    app: nginx-exp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-exp
+  template:
+    metadata:
+      labels:
+        app: nginx-exp
+    spec:
+      containers:
+      - name: exporter
+        image: nginx/nginx-prometheus-exporter:1.1.0
+        args: ["--nginx.scrape-uri", "http://nginx-svc/basic_status"]
